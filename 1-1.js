@@ -87,12 +87,12 @@ function isUnique(line) {
 	indices all filled to 0. Unlike Java and C++ which I'm a bit more familiar with, 
 	I found that Javascript doesn't lend itself to easily implement an array with 
 	specific default values. After researching I rememebered that I could just use 
-	an integer's binary represenataion to store	the bits and trigger them as they 
+	an integer's binary represenataion to store the bits and trigger them as they 
 	appear. I left-shift a 1 into a mask at the place of the specific character 
 	code. I determine if the 'and' operation of the bit vector and the mask is 
 	greater than 0 and return false, indicating that the current character is 
 	already stored in the bit vector. If it reaches the end of the function, I 
-	return true, indicating all	unique characters.
+	return true, indicating all unique characters.
 	Full admission: I did have to do research and ultimately did look at the 
 	solution to see how far off I was when I ran into some difficulties debugging.
 */
