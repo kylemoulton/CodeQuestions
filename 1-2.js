@@ -55,7 +55,6 @@ function isPermutation(str1, str2) {
 	return false;
 }
 /* 
-	length, I'll check if they are the same string, forward or reverse. I'll
 	I initially began writing a solution that would check each character 
 	within the longer string and then check if the following characters 
 	matched the shorter string. Getting the string indices correct backwards 
