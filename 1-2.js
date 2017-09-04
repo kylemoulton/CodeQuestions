@@ -14,6 +14,7 @@
 	then determine if the shorter string is a permutation of the larger. 
 
 */
+
 /*
 //	First Attempt
 function isPermutation(str1, str2) {
@@ -55,7 +56,9 @@ function isPermutation(str1, str2) {
 	}
 	return false;
 }
+*/
 
+/*
 	I initially began writing a solution that would check each character 
 	within the longer string and then check if the following characters 
 	matched the shorter string. Getting the string indices correct backwards 
@@ -67,13 +70,16 @@ function isPermutation(str1, str2) {
 */
 
 /* 
+	DISREGARD PRIOR SOLUTION:
 	I entirely missed the definition of what a permutation is. I was under the
-	incorrect assumption that one string was a permutation of another if the 
-	the larger or equal length string contains the other string, either backwards
-	or forwards. I will re-attempt the problem understanding now that two strings
-	are permutations of each other if they are both the same length, and contain
-	the same characters in any combination. 
+	incorrect assumption that a string was a permutation of another if the other
+	string contains the it, either backwards or forwards. I will re-attempt the 
+	problem, understanding now that two strings are permutations of each other 
+	if they are both the same length, and contain the same characters in any 
+	combination. 
 */
+
+/*
 function isPermutation(str1, str2) {
 	if (str1.length != str2.length) {
 		return false;
@@ -114,6 +120,8 @@ function isPermutation(str1, str2) {
 
 	return true;
 }
+*/
+
 /*
 	The solution works for the test cases I have created. I need to make sure that I really
 	have all the details and definitions correct before i attempt these problems. I used a 
@@ -129,7 +137,61 @@ function isPermutation(str1, str2) {
 	another angle in the next attempt for something more efficient. 
 */
 
+/*
+	Hint: Two strings that are permutations should have the same characters, but in different
+	orders. Can you make the orders the same?
 
+	I guess I could split the strings into arrays, and then sort the characters, either by a
+	default sort function, or one I can write from scratch. I think I'll take the challenge
+	and write one just for fun.
+*/
+
+function isPermutation(str1, str2) {
+	if (str1.length != str2.length) {
+		return false;
+	}
+	/*
+	This line accomplishes the remainder of the function, but seems pretty dirty and 
+	difficult to read and debug.
+
+	return sortArray(str1.toLowerCase().split("")).join("") === sortArray(str2.toLowerCase().split("")).join("");
+	*/
+	str1 = str1.toLowerCase();
+	str2 = str2.toLowerCase();
+
+	str1 = str1.split("");
+	str2 = str2.split("");
+
+	str1 = sortArray(str1);
+	str2 = sortArray(str2);
+	
+	str1 = str1.join("");
+	str2 = str2.join("");
+
+	return str1 === str2;
+}
+
+function sortArray(arr) {
+	for (var i = 0; i < arr.length - 1; i++) {
+		var indexOfSmallest = i;
+		for (var j = i; j < arr.length; j++) {
+			if (arr[j].charCodeAt(0) < arr[indexOfSmallest].charCodeAt(0)) {
+				indexOfSmallest = j;
+			}
+		}
+		var temp = arr[i];
+		arr[i] = arr[indexOfSmallest];
+		arr[indexOfSmallest] = temp;
+	}	
+	return arr;
+}
+
+/*
+	I followed the provided hint and sorted the characters within the strings. I then 
+	compare them for equivalence. This solution seems considerably cleaner than my prior 
+	solution. Sorting each of the arrays may take a considerable amount of time, but 
+	being able to just test string equivalence for the final return value is intuitive.
+*/
 
 
 // Test Function
@@ -144,6 +206,11 @@ function testFunction(actual, expected) {
 }
 
 // Tests
+testFunction(isPermutation("cba", "abc"), true);
+testFunction(isPermutation("bca", "abc"), true);
+testFunction(isPermutation("cab", "abc"), true);
+testFunction(isPermutation("bac", "abc"), true);
+testFunction(isPermutation("jihgfedcba", "abc"), false);
 testFunction(isPermutation("abc", "abc"), true);
 testFunction(isPermutation("abc", "cba"), true);
 testFunction(isPermutation("abc", "bca"), true);
@@ -154,11 +221,7 @@ testFunction(isPermutation("abc", "ccc"), false);
 testFunction(isPermutation("abc", "abc"), true);
 testFunction(isPermutation("abc", "ddd"), false);
 testFunction(isPermutation("This is a test", "tset a si sihT"), true);
-
-
-
-
-
+testFunction(isPermutation("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMONPQRSTUVWXYZ", "ABCDEFGHIJKLMONPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"), true);
 
 
 
