@@ -146,16 +146,17 @@ function isPermutation(str1, str2) {
 	and write one just for fun.
 */
 
+/*
 function isPermutation(str1, str2) {
 	if (str1.length != str2.length) {
 		return false;
 	}
-	/*
-	This line accomplishes the remainder of the function, but seems pretty dirty and 
-	difficult to read and debug.
+	
+	// This line accomplishes the remainder of the function, but seems pretty dirty and 
+	// difficult to read and debug.
 
-	return sortArray(str1.toLowerCase().split("")).join("") === sortArray(str2.toLowerCase().split("")).join("");
-	*/
+	// return sortArray(str1.toLowerCase().split("")).join("") === sortArray(str2.toLowerCase().split("")).join("");
+	
 	str1 = str1.toLowerCase();
 	str2 = str2.toLowerCase();
 
@@ -185,12 +186,52 @@ function sortArray(arr) {
 	}	
 	return arr;
 }
+*/
 
 /*
 	I followed the provided hint and sorted the characters within the strings. I then 
 	compare them for equivalence. This solution seems considerably cleaner than my prior 
 	solution. Sorting each of the arrays may take a considerable amount of time, but 
 	being able to just test string equivalence for the final return value is intuitive.
+*/
+
+/*
+	Solution Provided by Book - with modificiations for javascript
+*/
+function isPermutation(str1, str2) {
+	if (str1.length != str2.length) {
+		return false;
+	}
+
+	var characters = [];
+
+	// Not in book: Javascript arrays are default value "undefined". I have to set all
+	// values initially to 0 myself.
+	for (var i = 0; i < 128; i++) {
+		characters[i] = 0;
+	}
+
+	for (var i = 0; i < str1.length; i++) {
+		characters[str1.charCodeAt(i)]++;
+	}
+
+	for (var i = 0; i < str2.length; i++) {
+		characters[str2.charCodeAt(i)]--;
+		if (characters[str2.charCodeAt(i)] < 0) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/*
+	The provided solution is similar in some ways to my first attempt. Instead of using
+	a character array, I used two separate maps. I hadn't thought to decrement the 
+	character counts for the second string. This removes the need for successive passes 
+	through a map/array to determine if there are different number of characters. I'll 
+	have to keep this technique in mind for related problems. 
+
 */
 
 
