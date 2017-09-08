@@ -67,6 +67,7 @@ function isPalindromePermutation(str) {
 	I'll have to review 1.1 where I did something similar.
 */
 
+/*	
 //	Second Attempt
 
 function isPalindromePermutation(str) {
@@ -79,23 +80,7 @@ function isPalindromePermutation(str) {
 		// Turn the 1 on at character code index
 		var charMask = (1 << str.charCodeAt(i));
 
-		/*
-			I'm trying to think of an efficient way to determine if only a single
-			bit is toggled in a bit array... I cant think of a way that wont
-			require another loop through the array or some complex compiler 
-			feature that I'm unsure of how to implement. I'll have to 
-			re-think this.
-		*/
-
-		/*
-			Update after thinking for a while. I'll just compare the bit vector 
-			XOR'd with the mask and the bit vector to see if its greater. This will
-			indicate an odd number for that particular character. I'll increment a 
-			counter for this, and decrement when it is not greater. Then check to see
-			if the counter is greater than 1 at the end, indicating only one or 0 odd 
-			numbered occurrences of a single character.
-		*/
-
+		// Check if odd or even occurrence
 		if ((bitVector ^ charMask) > bitVector) {
 			oddCount++;
 		} else {
@@ -107,6 +92,93 @@ function isPalindromePermutation(str) {
 	}
 	return oddCount <= 1;
 }
+*/
+
+/*
+	I thought it would be easiest to toggle bits in a bit vector for each occurence
+	of a character, and then check to see that either no bits are toggled, or only 
+	a single bit is toggled. I couldn't readily think of an efficient way to check
+	if only a single bit was toggled, so I use an integer to increment odd number
+	occurences, and decrement even number occurences. Then I check whether this
+	couner is less than or equal to 1. I check even/odd number occurences by 
+	comparing the bit vector XOR'd with a mask for the particular character by 
+	itself. I then store this XOR'd operation to the bit vector. It's more efficient
+	than prior attepts, but I wish I could have thought of a solution that didn't
+	require a second variable to count odd/even occurrences.  
+*/
+
+/*
+	Solution From Book:
+*/
+
+/*
+function isPalindromePermutation(str) {
+	var bitVector = createBitVector(str);
+	return bitVector == 0 || checkExactlyOneBitSet(bitVector);
+}
+
+function createBitVector(str) {
+	bitVector = 0;
+	for (var i = 0; i < str.length; i++) {
+		var x = str.charCodeAt(i);
+		bitVector = toggle(bitVector, x);
+	}
+	return bitVector;
+}
+
+function toggle(bitVector, index) {
+	if (index < 0) {
+		return bitVector;
+	}
+
+	var mask = 1 << index;
+	if ((bitVector & mask) === 0) {
+		bitVector |= mask;
+	} else {
+		bitVector &= ~mask;
+	}
+	return bitVector;
+}
+
+function checkExactlyOneBitSet(bitVector) {
+	return (bitVector & (bitVector - 1)) === 0;
+}
+*/
+
+/*
+	Final Thoughts:
+	The book's solution is much more compartmentalized and broken down into discrete
+	functions that do a single task. This is great for debugging. My solution is 
+	contained within a single function and does something similar, but not quite the
+	same. THey solved the problem I had encountered to easily determine if a bit
+	vector only has a single bit toggled. I hadn't considered ANDing the bit vector
+	with itself minus 1 and checking if 0. That's quite clever. As for toggling 
+	a bit, I used an XOR operation while they used conditional OR or AND operators.
+	I'm not sure which is more efficient, but I'm happy using an XOR for fewer lines
+	of code.
+	I'm going to try one final attempt without having a counter variable. I'll utilize
+	the functionalty of the checkExactlyOneBitSet function to do so.
+*/
+
+function isPalindromePermutation(str) {
+	str = str.toLowerCase();
+
+	var bitVector = 0;
+	for (var i = 0; i < str.length; i++) {
+		// Turn the 1 on at character code index
+		var charMask = (1 << str.charCodeAt(i));
+		// Toggle the bit at character code index
+		bitVector = bitVector ^ charMask;
+	}
+	return (bitVector & (bitVector - 1)) === 0 || bitVector === 0;
+}
+
+
+/*
+	Final Final Thoughts:
+	Works great! I'm sure this isn't as nice to debug, but it's fun to reduce the
+	number of lines required.
+*/
 
 // Test Function
 function testFunction(actual, expected) {
