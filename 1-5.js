@@ -88,6 +88,36 @@ function findMatchLength(shorter, longer) {
 	return matchLength;
 }
 
+/*
+	Afterthoughts:
+	This solution took far longer than I had expected. I was trying to think of a 
+	clever way to use a map for character counts and other specifications that would
+	determine whether the characters are in similar sequences to see if the two strings 
+	are one character off. I eventually broke the problem down into the three separate 
+	cases and solved each case separately. After completing the separate cases, I 
+	realized I could merge the insert and remove cases to reduce my code. Then I broke 
+	out the findMatchLength function that the remaining two cases had in common. I 
+	believe the solution works with O(n) performance, but I imagine there are many 
+	improvements I can make. I'm looking forward to reviewing hints and the book's 
+	solution to see other ways to solve it.
+*/
+
+/*
+Hint 1: Start with the easy thing. Can you check each of the conditions separately?
+Hint 2: What is the relationship between the "insert character" option and the 
+"remove character" option? Do these need to be two separate checks?
+Hint 3: Can you do all three checks in a single pass?
+
+
+	Initial Impressions:
+	I have unintentionally utilized the first two hints. I had already thought to break
+	the problem down into it's three separate cases and solved each independently. After
+	solving each of the cases, I determined that I could merge the insert and remove 
+	character cases by assigning the strings to shorter and longer named variables. I
+	think I can give the final hint/prompt a try. I dont think the solution will be 
+	much more difficult than rearranging and adding some conditional statements.
+*/
+
 // Test Function
 function testFunction(actual, expected) {
 	if (actual === expected) {
