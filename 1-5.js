@@ -158,7 +158,7 @@ function isOneAway(str, trueStr) {
 			return shorter === longer.substring(0, longer.length - 1);
 		}
 	}
-	//	Check if the the character sequences matches until the end, 
+	//	Check if the character sequences matches until the end, 
 	//	or if the string matches on opposing ends of a single character
 	var matchLength = findMatchLength(shorter, longer);
 	// Return whether substring following matchLength to end of string matches	
@@ -195,8 +195,7 @@ function findMatchLength(shorter, longer) {
 */
 
 /*
-	Solution from book:
-*/
+//	Solution from book:
 function isOneAway(trueStr, str) {
 	if (Math.abs(trueStr.length - str.length) > 1) {
 		return false;
@@ -226,6 +225,7 @@ function isOneAway(trueStr, str) {
 
 	return true;
 }
+*/
 
 /*
 	The provided solution is considerably simpler than the one I had produced.
@@ -240,6 +240,70 @@ function isOneAway(trueStr, str) {
 	"(or 0 edits)" away. I thought I was to determine that if they were equivalent, 
 	they were not one change away. I'll remedy this in my final solution. 
 */
+
+// FInal Attempt
+function isOneAway(str, trueStr) {
+	// Check if more than 1 character extra
+	if (Math.abs(trueStr.length - str.length) > 1) {
+		return false;
+	// If 0 edits required, return true
+	} else if (trueStr === str) {
+		return true;
+	}
+
+	var shorter = "";
+	var longer = "";
+	// If same length, but not equal, must have a character to replace
+	if (trueStr.length === str.length) {
+		// Check if first the character is the offending character
+		if (trueStr[0] != str[0]) {
+			return str.substring(1, str.length) === trueStr.substring(1, trueStr.length);
+		// Check if the last character is the offending character
+		} else if (trueStr[trueStr.length - 1] != str[str.length - 1]) {
+			return str.substring(0, str.length - 1) === trueStr.substring(0, trueStr.length - 1);
+		}
+		// Assign to shorter and lower regardless of length for strings of equal length
+		shorter = str;
+		longer = trueStr;
+	} else {
+		if (str.length > trueStr.length) {
+			longer = str;
+			shorter = trueStr;	
+		} else {
+			longer = trueStr;
+			shorter = str;
+		}
+		// Return if only missing first character or additional first character
+		if (shorter[0] != longer[0]) {
+			return shorter === longer.substring(1, longer.length);
+		}
+		// Return if missing last character or additional last character
+		if (shorter[shorter.length - 1] != longer[longer.length - 1]) {
+			return shorter === longer.substring(0, longer.length - 1);
+		}
+	}
+	//	Check if the character sequences matches until the end, 
+	//	or if the string matches on opposing ends of a single character
+	var matchLength = findMatchLength(shorter, longer);
+	// Return whether substring following matchLength to end of string matches	
+	if (shorter.length === longer.length) { 
+		return str.substring(matchLength + 1, str.length) === trueStr.substring(matchLength + 1, trueStr.length);			
+	} else {
+		return shorter.substring(matchLength, shorter.length) === longer.substring(matchLength + 1, longer.length);
+	}
+}
+
+function findMatchLength(shorter, longer) {
+	var matchLength = 0;
+	for (var i = 0; i < shorter.length; i++) {
+		if (shorter.substring(0, i) === longer.substring(0, i)) {
+			matchLength = i;
+		} else {
+			break;
+		}
+	}
+	return matchLength;
+}
 
 // Test Function
 function testFunction(actual, expected) {
@@ -306,8 +370,7 @@ testFunction(isOneAway("pae", "pale"), true);
 
 // Various Tests
 console.log("Various Test 1");
-// Change this to true in final attempt
-testFunction(isOneAway("Hello, this is a test", "Hello, this is a test"), false);
+testFunction(isOneAway("Hello, this is a test", "Hello, this is a test"), true);
 console.log("Various Test 2");
 testFunction(isOneAway("Hello, this is a test", "Hello,,, this is a test"), false);
 console.log("Various Test 3");
